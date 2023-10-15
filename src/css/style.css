@@ -1,0 +1,402 @@
+/* Reset some default styles for better consistency */
+body {
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px;  /* Adjust this value based on the actual height of your header */
+  padding-bottom: 60px;  /* Adjust this value based on the actual height of your footer */
+}
+
+header, footer {
+  flex-shrink: 0;  /* Prevent shrinking */
+}
+
+
+
+main {
+  flex-grow: 1;  /* Allow the main element to grow and take up the remaining space */
+}
+
+body, h1, h2, h3, p, ul, li, a {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Styles for the header */
+header {
+  background-color: #729B79;
+  padding: 10px;
+  color: #2E2C2F;
+  z-index: 10;
+  top: 0;
+  font-size: larger;
+  font-weight: bold;
+}
+
+/* #dynamic-header {
+  z-index: 9;
+  display: sticky;
+  top: 0;
+} */
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+nav a {
+  padding: 0 1em;
+  margin: 0 .5em;
+  color: #2E2C2F;
+  display: flex;
+  align-items: center;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+header img {
+  width: 3rem;
+  padding: 0 .5em;
+}
+
+.nav-links {
+  list-style: none;
+  gap: 2em;
+  display: flex;
+  /* background-color: #729B79; */
+}
+.close-nav {
+  display: none;
+}
+body.nav-open::before {
+  opacity: 1;
+  visibility: visible;
+  z-index: 9;
+}
+
+.menu-icon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Styles for the main content */
+.booking {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+  margin: 20px;
+}
+
+.booking input[type="text"], .booking input[type="date"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.booking button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.bookingList {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* align-items: center; */
+  /* margin: 200px; */
+  background-color: #02a84c;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+
+/* .bookingList input[type="text"], .booking input[type="date"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+} */
+
+.bookingList button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Styles for the footer */
+footer {
+  background-color: #729B79;
+  color: #2E2C2F;
+  padding: 10px 20px;
+  display: flex;
+  /* justify-content: space-evenly; */
+  /* justify-content: space-around; */
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  /* left: 0; */
+  width: 100%;
+  /* z-index: 10; */
+}
+
+.right {
+  margin-right: 50px;
+}
+
+/* footer .left, footer .center, footer .right, footer .hide {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} */
+
+.hide {
+  display: none;
+}
+
+/* .center img {
+  width: rem;
+  padding: .5em;
+} */
+
+footer img:hover {
+  transform: scale(1.4);
+}
+
+footer img {
+  width: 3rem;
+  transition: all .2s ease-in-out;
+  padding: .5em;
+}
+
+/* Responsive styles for mobile devices */
+@media (max-width: 768px) {
+  .hide{
+    display: block;
+  }
+
+  .nav-links {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      position: absolute;
+      top: 60px;
+      /* right: 20px; */
+      background-color: #729B79;
+      border-radius: 5px;
+      gap: 20em;
+      height: 100vh;
+      transition: transform 0.3s; /* Slide transition */
+      transform: translateX(100%); /* Initially moved off-screen */
+  }
+
+  .nav-links.active {
+    transform: translateX(0); /* Move it into view when active */
+    width: 10em;
+    padding: 50px 10px 10px 10px;
+    margin: 0;
+    left: 0;
+    top: 0;
+    gap: 2em;
+    align-items: center;
+    display: flex;
+    z-index: 10;
+  }
+  /* Close button styles */
+  .close-nav {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 5px;
+  }
+
+  /* Overlay to dim the background */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 5; /* Keep it below the nav-links */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+  }
+
+  .menu-icon {
+      display: block;
+  }
+
+  footer .right, footer .center {
+    display: none;
+  }
+
+  .searchcol1 label {
+    display: none;
+  }
+
+  form .booking-additional {
+    flex-direction: column;
+    gap: .5em;
+    align-items: end;
+  }
+
+
+}
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: center; */
+  justify-content: center;
+  padding: 1em;
+}
+.hero img {
+  min-width: 300px;
+  max-width: 500px;
+  align-items: center;
+}
+
+.airport-dropdown {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  width: max-content;
+  z-index: 5;
+}
+
+.airportSearch {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+.airport-dropdown div {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+form .airportSearch {
+  gap: 1em;
+}
+
+.airport-dropdown div:hover {
+  background-color: #BACDB0;
+}
+
+.flightDates {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2em;
+  /* padding: .5em; */
+}
+
+#currency {
+  max-height: 4em;
+  font-size: medium;
+  overflow-y: scroll;
+  padding: .5em;
+  font-weight: 600;
+}
+
+.searchcol1 {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-evenly; */
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+
+
+#itenerary-type label {
+  cursor: pointer;
+}
+
+.searchcol1 input {
+  /* max-width: 40em; */
+  padding: .5em;
+  /* font-size: larger; */
+  /* align-items: center; */
+}
+
+.booking-additional {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  /* border-style: solid black ; */
+  padding-top: .5em;
+  /* max-width: 3em; */
+  align-items: center;
+}
+
+.booking-additional div {
+  padding-top: .5em;
+}
+
+.booking-additional select {
+  /* max-width: 30em; */
+  padding: .5em;
+  font-size: small;
+}
+
+/* .booking-additional label {
+  margin: 0;
+  padding: 0;
+
+} */
+
+/* .passengerCount {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+} */
+
+/* Flight Card */
+.flightsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1em;
+  gap: .5em;
+}
+
+.flight-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #1ad5e6;
+  border-radius: 20px;
+  padding: 1em;
+}
+
+

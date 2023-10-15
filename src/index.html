@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+    <link rel="alternate icon" href="/images/logo.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <script defer type="module" src="./js/main.js"></script>
+    <title>Travel Almanac | Home</title>
+  </head>
+  <body>
+      <div id='dynamic-header'></div>
+
+      <main>
+        <div class="hero">
+          <img
+            src="/images/hero.png"
+            srcset="images/hero.png 500w, images/hero.png"
+            alt="Logo with Name"
+          />
+        </div>
+          <section id="booking" class="booking">
+              <div id="itenerary-type">
+                  <label>
+                      <input type="radio" name="trip-type" value="ONE_WAY" checked> One-Way
+                  </label>
+                  <label>
+                      <input type="radio" name="trip-type" value="ROUND_TRIP"> Roundtrip
+                  </label>
+              </div>
+
+              <div class="airportSearch">
+                <div>
+                  <input id="sourceAirport" placeholder="Country of Origin" required type="text">
+                  <button type="submit" id="searchSource">Airports</button>
+                  <div id="airportDropdownSource" class="airport-dropdown"></div>
+                </div>
+
+                <div>
+                  <input id="destinationAirport" placeholder="Country of Destination" required type="text">
+                  <button type="submit" id="searchDestination">Airports</button>
+                  <div id="airportDropdownDestination" class="airport-dropdown"></div>
+                </div>
+              </div>
+
+              <div class="flightDates">
+                <div>
+                  <label for="departure-date">Departure Date:</label>
+                    <input id="departure-date" placeholder="Departure Date" required type="date">
+                </div>
+                <div>
+                    <input class="return-date" hidden id="return-date" placeholder="Return Date" type="date">
+                    <label for="return-date">:Return Date</label>
+                  </div>
+              </div>
+
+              <div>
+                <label for="currency">Currency:</label>
+                <select id="currency" name="currency">
+                  <!-- Currency options will be dynamically populated -->
+                </select>
+              </div>
+
+              <div id="searchFlightsBtn">
+                <button type="submit" id="searchFlights">Search Flights</button>
+              </div>
+
+          </section>
+      </main>
+
+      <div id='dynamic-footer'></div>
+  </body>
+</html>
+
