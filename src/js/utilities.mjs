@@ -55,7 +55,7 @@ export function toggleReturnDate() {
   const returnDateInput = document.querySelector('.return-date');
   const returnDateLabel = document.querySelector('label[for="return-date"]');
 
-  if (tripType === 'roundtrip') {
+  if (tripType === 'ROUND_TRIP') {
       returnDateInput.hidden = false;
       returnDateLabel.hidden = false;
   } else {

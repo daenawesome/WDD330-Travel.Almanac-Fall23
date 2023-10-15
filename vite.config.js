@@ -4,12 +4,6 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   root: 'src/',
 
-  resolve: {
-    alias: {
-      '@css': '/css' // Adding alias for css directory
-    }
-  },
-
   build: {
     outDir: '../dist',
     rollupOptions: {
