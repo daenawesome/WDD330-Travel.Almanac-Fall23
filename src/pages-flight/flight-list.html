@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+    <link rel="alternate icon" href="/images/logo.png">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <script defer type="module" src="../js/flight-List.js"></script>
+    <title>Travel Almanac | Flight List</title>
+  </head>
+  <body>
+      <header id='dynamic-header'></header>
+
+      <main>
+          <form id="booking" class="bookingList">
+
+            <div id="searchFlightsBtn">
+              <button type="submit" id="searchFlights">Search Flights</button>
+            </div>
+
+            <div id="itenerary-type">
+                <label>
+                    <input type="radio" name="trip-type" value="ONE_WAY" checked> One-Way
+                </label>
+                <label>
+                    <input type="radio" name="trip-type" value="ROUND_TRIP"> Roundtrip
+                </label>
+            </div>
+
+            <section class="searchcol1">
+              <div class="airportSearch">
+                <div>
+                  <input id="sourceAirport" placeholder="Country of Origin" required type="text">
+                  <button type="submit" id="searchSource">Airports</button>
+                  <div id="airportDropdownSource" class="airport-dropdown"></div>
+                </div>
+
+                <div>
+                  <input id="destinationAirport" placeholder="Country of Destination" required type="text">
+                  <button type="submit" id="searchDestination">Airports</button>
+                  <div id="airportDropdownDestination" class="airport-dropdown"></div>
+                </div>
+              </div>
+
+              <div class="flightDates">
+                <div>
+                  <label for="departure-date">Departure Date:</label>
+                    <input id="departure-date" placeholder="Departure Date" required type="date">
+                </div>
+                <div>
+                  <label for="return-date">Return Date:</label>
+                  <input class="return-date" hidden id="return-date" placeholder="Return Date" type="date">
+                </div>
+              </div>
+
+              <div>
+                <label for="currency">Currency:</label>
+                <select id="currency" name="currency">
+                  <!-- Currency options will be dynamically populated -->
+                </select>
+              </div>
+            </section>
+
+
+
+
+            <section id="booking-additional" class="booking-additional">
+              <div>
+                <label for="cabin-class">Cabin Class:</label>
+                <select id="cabin-class">
+                  <option value="ECONOMY">ECONOMY</option>
+                  <option value="PREMIUM_ECONOMY">PREMIUM ECONOMY</option>
+                  <option value="BUSINESS">BUSINESS</option>
+                  <option value="FIRST">FIRST</option>
+                </select>
+              </div>
+              <div>
+              <label for="Nonstop">Stops:</label>
+              <select id="Nonstop">
+                <option value="no">Any number of stops</option>
+                <option value="yes">Nonstop Only</option>
+              </select>
+            </div>
+            <div>
+              <label for="sort-flights">Sort by:</label>
+              <select id="sort-flights">
+                <option value="ML_BEST_VALUE">Best Value</option>
+                <option value="DURATION">Flight Duration</option>
+                <option value="PRICE">Price: Low to High</option>
+                <option value="EARLIEST_OUTBOUND_DEPARTURE">Earliest Departure</option>
+                <option value="EARLIEST_OUTBOUND_ARRIVAL">Earliest Arrival</option>
+                <option value="LATEST_OUTBOUND_DEPARTURE">Latest Departure</option>
+                <option value="LATEST_OUTBOUND_ARRIVAL">Latest Arrival</option>
+              </select>
+            </div>
+
+
+              <div>
+                <label for="numAdults">Adults:</label>
+                <input type="number" id="numAdults" name="numAdults" min="0" max="99" value="1" required>
+              </div>
+              <div>
+                <label for="numSeniors">Seniors:</label>
+                <input type="number" id="numSeniors" name="numSeniors" min="0" max="99" placeholder="0">
+              </div>
+
+            </section>
+
+            <!-- <div id="searchFlightsBtn">
+              <button type="submit" id="searchFlights">Search Flights</button>
+            </div> -->
+          </form>
+
+          <section class="part-view">
+            <!-- <div></div> -->
+            <!-- <div> -->
+            <h1>Flights Available</h1>
+            <div id="flightsContainer" class="flightsContainer"></div>
+          <!-- </div> -->
+            <!-- <div></div> -->
+          </section>
+      </main>
+
+      <footer id='dynamic-footer'></footer>
+  </body>
+</html>
+
