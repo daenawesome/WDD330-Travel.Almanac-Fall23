@@ -6,7 +6,6 @@ body {
   padding-bottom: 60px;
 }
 
-
 .homeCard {
   background: rgba( 186, 205, 176, 0.25 );
 box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
@@ -41,11 +40,6 @@ body, h1, h2, h3, p, ul, li, a {
   padding: 0;
   font-family: Arial, sans-serif;
 }
-
-/* a {
-  text-decoration: none;
-  color: inherit;
-} */
 
 a {
 	text-decoration: none;
@@ -509,10 +503,46 @@ svg:nth-child(2) {
   }
 }
 
+.pagination {
+  padding: .5em;
+  align-items: center;
+  text-align: center;
+}
+.pagination a.current {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #333;
+  background-color: #eee;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
 
+.pagination a {
+  color: black;
+  text-decoration: none;
+  margin: 0 7px;
+}
 
+.pagination a:hover {
+  font-size: 1.5em;
 
+}
 
+#searchFlightsBtn {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#searchFlightsBtn button {
+  padding: 1em;
+  margin: .5em;
+}
+
+button:hover {
+  color: black;
+  background-color: #0066ff97;
+}
 
 
 
@@ -635,6 +665,10 @@ svg:nth-child(2) {
 
   .flightsContainer {
     grid-template-columns: 1fr;
+  }
+
+  #searchFlightsBtn {
+    justify-content: center;
   }
 
 
