@@ -7,6 +7,7 @@ import {
   toggleReturnDate,
   loadCurrencyData,
   fetchFlights,
+  structureFlightData,
 } from './flightServices.mjs'
 
 loadDynamicContent ();
@@ -82,45 +83,6 @@ elements.searchButton.addEventListener('click', async function() {
       console.error('No flights found or unexpected data structure:', result);
   }
 });
-
-// Function to structure flight data for sessionStorage
-function structureFlightData(flights) {
-    return flights.map((flight, flightIndex) => {
-        const flightId = `flight_${flightIndex}`;
-
-        const segments = flight.segments.map((segment, segmentIndex) => {
-            const segmentId = `${flightId}_segment_${segmentIndex}`;
-
-            const legs = segment.legs.map(leg => ({
-                id: `${segmentId}_leg`,
-                ...leg
-            }));
-
-            const layovers = segment.layovers && segment.layovers.length
-                ? segment.layovers.map(layover => ({
-                    durationType: layover.durationType,
-                    durationInMinutes: layover.durationInMinutes
-                }))
-                : [{ durationType: 'No Layover', durationInMinutes: 0 }];
-
-            return {
-                id: segmentId,
-                legs,
-                layovers
-            };
-        });
-
-        const purchaseLinks = flight.purchaseLinks.map(link => ({
-            ...link
-        }));
-
-        return {
-            id: flightId,
-            segments,
-            purchaseLinks
-        };
-    });
-}
 
 // Add event listener for trip type radio buttons
 document.querySelectorAll('input[name="trip-type"]').forEach(radio => {

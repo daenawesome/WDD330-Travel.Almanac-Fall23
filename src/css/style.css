@@ -448,23 +448,66 @@ color: #ccc;
   font-weight: bold;
   width: -moz-fit-content ;
   width: fit-content;
-
 }
 
 .purchase-link:hover {
   color: yellow;
 }
 
+.flightFooter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
+.label {
+  height: 40px;
+  width: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  cursor: pointer;
+}
 
+.heart {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
 
+svg {
+  height: 30px;
+  fill: rgb(168, 170, 181);
+  transition: all 500ms ease-in-out;
+}
 
+svg:nth-child(2) {
+  position: absolute;
+  z-index: 2;
+}
 
+.label input {
+  display: none;
+}
 
+.label input[type="checkbox"]:checked ~ .heart svg {
+  fill: red;
+}
 
+.label input[type="checkbox"]:checked + .heart svg:nth-child(2) {
+  filter: opacity(1);
+  animation: heart 0.3s linear forwards;
+}
 
-
-
+@keyframes heart {
+  to {
+    transform: scale(1.4);
+    filter: opacity(0);
+    fill: red;
+  }
+}
 
 
 

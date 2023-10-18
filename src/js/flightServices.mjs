@@ -10,18 +10,27 @@ export const options = {
     }
 };
 
-// Function to fetch flights data from the API
-export async function fetchFlights(url) {
+export async function fetchFlights(apiURL) {
+  console.log('Fetching flights from URL:', apiURL);  // Log the API Request URL
+
   try {
-      const response = await fetch(url, options);
+      const response = await fetch(apiURL, options);
+
+      console.log('API Response:', response);  // Log the raw API response
+      console.log('Response Status Code:', response.status);  // Log the status code
 
       if (!response.ok) {
+          const responseBody = await response.text();  // Convert response body to text
+          console.log('API Response Body:', responseBody);  // Log the response body
           throw new Error(`API returned status: ${response.status}`);
       }
-      return await response.json();
+
+      const data = await response.json();
+      return data;
+
   } catch (error) {
-      console.error('Error fetching flights:', error);
-      return null;
+      console.error('Error fetching flights:', error);  // Log any errors
+      throw error;
   }
 }
 
@@ -114,4 +123,43 @@ export async function loadCurrencyData() {
 
   // Return the currencyData for further usage
   return currencyData;
+}
+
+// Function to structure flight data for sessionStorage
+export function structureFlightData(flights) {
+  return flights.map((flight, flightIndex) => {
+      const flightId = `flight_${flightIndex}`;
+
+      const segments = flight.segments.map((segment, segmentIndex) => {
+          const segmentId = `${flightId}_segment_${segmentIndex}`;
+
+          const legs = segment.legs.map(leg => ({
+              id: `${segmentId}_leg`,
+              ...leg
+          }));
+
+          const layovers = segment.layovers && segment.layovers.length
+              ? segment.layovers.map(layover => ({
+                  durationType: layover.durationType,
+                  durationInMinutes: layover.durationInMinutes
+              }))
+              : [{ durationType: 'No Layover', durationInMinutes: 0 }];
+
+          return {
+              id: segmentId,
+              legs,
+              layovers
+          };
+      });
+
+      const purchaseLinks = flight.purchaseLinks.map(link => ({
+          ...link
+      }));
+
+      return {
+          id: flightId,
+          segments,
+          purchaseLinks
+      };
+  });
 }

@@ -6,6 +6,9 @@ import {
   fetchAndDisplayAirports,
   toggleReturnDate,
   loadCurrencyData,
+  fetchFlights,
+  API_HOST,
+  structureFlightData,
 } from './flightServices.mjs'
 
 import {
@@ -15,17 +18,17 @@ import {
 loadDynamicContent ();
 toggleReturnDate();
 let currencyData = [];
+const flightsContainer = document.getElementById('flightsContainer');
 
 // Container where the flight cards will be appended
 function handleFlights(flights) {
-  const flightsContainer = document.getElementById('flightsContainer');
 
   // Clear any previous flights
   flightsContainer.innerHTML = '';
 
-  flights.forEach(flight => {
+  flights.forEach((flight, index) => {
       // Generate the flight card using the template
-      const flightCard = flightCardTemplate(flight);
+      const flightCard = flightCardTemplate(flight, index);
 
       // Append the card to the container
       flightsContainer.innerHTML += flightCard;
@@ -42,19 +45,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Hide/Unhide flights toggle
-document.addEventListener('DOMContentLoaded', function() {
-  const toggles = document.querySelectorAll('.toggle-flight-details');
-  toggles.forEach(toggle => {
-      toggle.addEventListener('click', function() {
-          const content = this.nextElementSibling;
-          if (content.style.display === 'none' || content.style.display === '') {
-              content.style.display = 'block';
-          } else {
-              content.style.display = 'none';
-          }
-      });
-  });
+flightsContainer.addEventListener('click', function(event) {
+    if (event.target.classList.contains('toggle-flight-details')) {
+        const content = event.target.nextElementSibling;
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+        } else {
+            content.style.display = 'none';
+        }
+    }
 });
+
 
 // Retrieve searchParameters from sessionStorage
 document.addEventListener('DOMContentLoaded', function() {
@@ -168,4 +169,68 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Set the background image when the page loads
   setBackgroundImageBasedOnTime();
+});
+
+// Capture form inputs, fetch new flight data, and store it in session storage
+document.getElementById('searchFlights').addEventListener('click', async function(event) {
+  event.preventDefault();  // Prevent form submission
+
+  // Capture input values
+  const sourceAirport = document.getElementById('sourceAirport').value;
+  const destinationAirport = document.getElementById('destinationAirport').value;
+  const departureDate = document.getElementById('departure-date').value;
+  const returnDate = document.getElementById('return-date').value;
+  const itineraryType = document.querySelector('input[name="trip-type"]:checked').value;
+  const numAdults = document.getElementById('numAdults').value;
+  const numSeniors = document.getElementById('numSeniors').value;
+  const nonstop = document.getElementById('Nonstop').value;
+  const sortFlights = document.getElementById('sort-flights').value;
+  const classOfService = document.getElementById('cabin-class').value;
+  const currency = document.getElementById('currency').value;
+
+
+  // Construct search parameters
+  const searchParameters = {
+      sourceCode: sourceAirport,
+      destinationCode: destinationAirport,
+      departureDate: departureDate,
+      returnDate: (itineraryType === 'ROUND_TRIP') ? returnDate : '',
+      itineraryType: itineraryType,
+      numAdults: numAdults,
+      numSeniors: numSeniors,
+      nonstop: nonstop,
+      sortFlights: sortFlights,
+      classOfService: classOfService,
+      currencyCode: currency,
+      pageNumber: '1'
+  };
+
+  // Save the search parameters in session storage
+  sessionStorage.setItem('searchParameters', JSON.stringify(searchParameters));
+
+  let returnDateParam = '';
+  if (searchParameters.itineraryType === 'ROUND_TRIP' && searchParameters.returnDate) {
+      returnDateParam = `&returnDate=${encodeURIComponent(searchParameters.returnDate)}`;
+  }
+  // Construct the API request URL
+  const apiURL = `https://${API_HOST}/api/v1/flights/searchFlights?sourceAirportCode=${searchParameters.sourceCode}&destinationAirportCode=${searchParameters.destinationCode}&date=${encodeURIComponent(searchParameters.departureDate)}${returnDateParam}&itineraryType=${searchParameters.itineraryType}&sortOrder=${searchParameters.sortFlights}&numAdults=${searchParameters.numAdults}&numSeniors=${searchParameters.numSeniors}&classOfService=${searchParameters.classOfService}&pageNumber=${searchParameters.pageNumber}&nonstop=${searchParameters.nonstop}&currencyCode=${searchParameters.currencyCode}`;
+
+  // Fetch new flight data
+  const fetchedFlights = await fetchFlights(apiURL);
+  console.log('Raw fetched flights:', fetchedFlights);
+
+  // Check if the API response is valid and contains flight data
+  if (fetchedFlights && fetchedFlights.status === true && Array.isArray(fetchedFlights.data.flights)) {
+    const structuredFlights = structureFlightData(fetchedFlights.data.flights);
+    sessionStorage.setItem('fetchedFlights', JSON.stringify(structuredFlights));
+
+    // Display the new flight data in the DOM
+    handleFlights(structuredFlights);
+  } else if (fetchedFlights && fetchedFlights.message) {
+    // Handle error messages from the API
+    alert(fetchedFlights.message[0].returnDate || 'An error occurred.');
+  } else {
+    console.error('Unexpected flight data format:', fetchedFlights);
+  }
+
 });
