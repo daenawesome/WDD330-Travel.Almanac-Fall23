@@ -126,7 +126,7 @@ export async function loadCurrencyData() {
 }
 
 // Function to structure flight data for sessionStorage
-export function structureFlightData(flights) {
+export function structureFlightData(flights, currentPage) {
   return flights.map((flight, flightIndex) => {
       const flightId = `flight_${flightIndex}`;
 
@@ -147,6 +147,7 @@ export function structureFlightData(flights) {
 
           return {
               id: segmentId,
+              page: currentPage,
               legs,
               layovers
           };
