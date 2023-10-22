@@ -21,7 +21,7 @@ const elements = {
   departureDateInput: document.getElementById('departure-date'),
   returnDateInput: document.getElementById('return-date'),
   searchButton: document.getElementById('searchFlights'),
-  // Using arrow functions here to ensure these values are fetched only when called
+  // Using arrow functions to ensure these values are fetched only when called
   itineraryType: () => document.querySelector('input[name="trip-type"]:checked').value,
   currencyCode: () => document.getElementById('currency').value
 };
@@ -69,6 +69,7 @@ elements.searchButton.addEventListener('click', async function() {
       queryParams.append('returnDate', searchParameters.returnDate);
   }
   const url = `${baseURL}?${queryParams.toString()}`;
+  sessionStorage.setItem('searchParameters', JSON.stringify(searchParameters));
 
   // Fetch flight data using the constructed URL
   const result = await fetchFlights(url);

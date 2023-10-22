@@ -150,6 +150,78 @@ body.nav-open::before {
   cursor: pointer;
 }
 
+/* ABout Us */
+.about-section {
+  background: rgba(255, 255, 255, 0.42);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.1px);
+  -webkit-backdrop-filter: blur(5.1px);
+  padding: 20px;
+}
+
+.about-section h1 {
+  font-size: 28px;
+  color: #333;
+}
+
+.about-section .brand-name {
+  color: #003cff;
+  font-weight: bold;
+}
+
+.about-section .ourStory,
+.about-section .ourMission,
+.about-section .whyUs {
+  margin-top: 20px;
+}
+
+.about-section .ourStory h2,
+.about-section .ourMission h2,
+.about-section .whyUs h2 {
+  font-size: 24px;
+  color: #333;
+}
+
+.about-section .ourStory p,
+.about-section .ourMission p,
+.about-section .whyUs p {
+  font-size: 16px;
+  color: #555;
+}
+
+.about-section .whyUs ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.about-section .whyUs li {
+  font-size: 18px;
+  color: #555;
+  padding: 1em;
+}
+
+.about-section h2,
+.about-section p {
+  margin-top: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.about-section h2 + p {
+  margin-top: 10px;
+}
+
+.about-section p:last-child {
+  margin-bottom: 20px;
+}
+
+.about-section .whyUs ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
 
 /* Styles for the main content */
 .booking {
@@ -469,12 +541,16 @@ color: #ccc;
   display: grid;
   place-items: center;
   position: relative;
+  /* background-color: #007BFF; */
 }
 
 svg {
   height: 30px;
-  fill: rgb(168, 170, 181);
+  /* fill: rgb(168, 170, 181); */
+  fill: #007BFF;
+  /* border: #eee; */
   transition: all 500ms ease-in-out;
+  /* background-color: #ccc; */
 }
 
 svg:nth-child(2) {
@@ -543,7 +619,6 @@ button:hover {
   color: black;
   background-color: #0066ff97;
 }
-
 
 
 

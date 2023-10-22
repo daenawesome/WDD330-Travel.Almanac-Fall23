@@ -141,6 +141,7 @@ document.getElementById('searchFlights').addEventListener('click', async functio
       pageNumber: currentPage.toString()
   };
 
+  console.log('Search parameters:', searchParameters);
   // Save the search parameters in session storage
   sessionStorage.setItem('searchParameters', JSON.stringify(searchParameters));
 
@@ -300,6 +301,7 @@ loadCurrencyData().then(data => {
 
 // Background
 document.addEventListener('DOMContentLoaded', function() {
+  // Array of background images
   const images = [
       '/images/backdrop1.jpg',
       '/images/backdrop2.jpg',
@@ -329,7 +331,3 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set the background image when the page loads
   setBackgroundImageBasedOnTime();
 });
-
-
-
-
