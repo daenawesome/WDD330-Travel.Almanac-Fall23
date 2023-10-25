@@ -1,21 +1,30 @@
-// Main function to construct the flight card HTML.
-export function flightCardTemplate(flight) {
-  // Calculating total distance of the flight.
-  const totalDistance = flight.segments[0].legs.reduce((sum, leg) => sum + leg.distanceInKM, 0);
-  const totalDistanceMiles = Math.round(totalDistance * 0.621371).toLocaleString(); // Convert total distance to miles.
+// check if a flight is already favorited
+export function isFlightFavorited(uniqueID) {
+  // Retrieve the current list from storage
+  const favorites = JSON.parse(localStorage.getItem('favoriteFlights')) || [];
 
-  // Get the flight sequence (origin → destination for all segments).
+  // Check if any flight in favorites has the same unique ID
+  return favorites.some(favFlight => favFlight.uniqueID === uniqueID);
+}
+
+// Main function to construct the flight card HTML
+export function flightCardTemplate(flight) {
+  // Calculating total distance of the flight
+  const totalDistance = flight.segments[0].legs.reduce((sum, leg) => sum + leg.distanceInKM, 0);
+  const totalDistanceMiles = Math.round(totalDistance * 0.621371).toLocaleString(); // Convert total distance to miles
+
+  // Get the flight sequence (origin → destination for all segments)
   const flightSequence = getFlightSequence(flight);
 
-  // Get layover durations for all segments.
+  // Get layover durations for all segments
   const layoverDurations = flight.segments.map(getLayoverDurations);
-  // Remove duplicates from layover durations.
+  // Remove duplicates from layover durations
   const uniqueLayoverDurations = [...new Set(layoverDurations)];
 
-  // Map over each segment to construct the HTML for flight details.
+  // Map over each segment to construct the HTML for flight details
   const flightDetails = flight.segments.map((segment, segmentIndex) => {
       const segmentType = segmentIndex === 0 ? 'Outbound' : 'Return';
-      const segmentLegSequence = segment.legs.map(leg => `${leg.originStationCode} → ${leg.destinationStationCode}`).join(' & ');
+      const segmentLegSequence = segment.legs.map(leg => `${leg.originStationCode} <span class="planeSymbol">&#9992;</span> ${leg.destinationStationCode}`).join(' & ');
 
       return `
           <div class="segment-details">
@@ -25,6 +34,14 @@ export function flightCardTemplate(flight) {
               </div>
           </div>`;
   }).join('');
+
+  // Check if the current flight is in favorites
+  const isFavorited = isFlightFavorited(flight.uniqueID);
+  // Create the button text based on the favorite status
+  // const favoriteButtonText = isFavorited ? 'Unfavorite' : 'Favorite';
+  const favoriteButtonText = isFavorited ? '&#x1F49A; Remove from Favorites' : '&#x1F90D; Add to Favorites';
+  // Construct the favorite button
+  const favoriteButton = `<button class="favorite-button" data-unique-id="${flight.uniqueID}">${favoriteButtonText}</button>`;
 
   return `
       <div class="flight-card">
@@ -45,53 +62,54 @@ export function flightCardTemplate(flight) {
               <div class="purchase-link">
                   <span><a href="${flight.purchaseLinks[0].url}" target="_blank">Book Now for ${flight.purchaseLinks[0].currency} ${flight.purchaseLinks[0].totalPricePerPassenger} | ${flight.purchaseLinks[0].providerId}</a></span>
               </div>
+              ${favoriteButton}
           </div>
       </div>`;
 }
 
-// Helper function to generate the flight sequence string.
+// Helper function to generate the flight sequence string
 function getFlightSequence(flight) {
-  // Map over each segment and create a string of origin → destination.
+  // Map over each segment and create a string of origin → destination
   return flight.segments.map(segment => {
-      // Destructuring to get the first leg of each segment.
+      // Destructuring to get the first leg of each segment
       const [firstLeg] = segment.legs;
-      // Getting the last leg of the segment.
+      // Getting the last leg of the segment
       const lastLeg = segment.legs[segment.legs.length - 1];
-      // Returning a string containing the origin and destination station codes.
-      return `${firstLeg.originStationCode} → ${lastLeg.destinationStationCode}`;
+      // Returning a string containing the origin and destination station codes
+      return `${firstLeg.originStationCode} <span class="planeSymbol"> &#x2708; </span> ${lastLeg.destinationStationCode}`;
   }).join(' & '); // Join all segment strings with ' & '.
 }
 
-// Helper function to get layover durations, if available.
+// Helper function to get layover durations, if available
 function getLayoverDurations(segment) {
-  // Check if there are layovers and if the first one isn't a "No Layover".
+  // Check if there are layovers and if the first one isn't a "No Layover"
   if (segment.layovers && segment.layovers.length > 0 && segment.layovers[0].durationType !== 'No Layover') {
-      // If there's a layover, format the duration.
+      // If there's a layover, format the duration
       return formatDuration(segment.layovers[0].durationInMinutes);
   }
-  // If there's no layover, return 'No Layover'.
+  // If there's no layover, return 'No Layover'
   return 'No Layover';
 }
 
-// Helper function to construct the HTML for each leg of a flight.
+// Helper function to construct the HTML for each leg of a flight
 function getLegDetailTemplate(leg) {
-  // Format distances for readability.
+  // Format distances for readability
   const formattedDistanceKM = leg.distanceInKM.toLocaleString();
   const formattedDistanceMiles = Math.round(leg.distanceInKM * 0.621371).toLocaleString(); // Convert KM to Miles
 
-  // Return the HTML string for each leg, containing details like station codes, flight number, times, carrier info, and distance.
+  // Return the HTML string for each leg, containing details
   return `
       <div class="leg-details">
           <div class="logo-detail">
             <!-- Display airline details with logo -->
             <div class="airline-details">
-                <img src="${leg.operatingCarrier.logoUrl}" alt="Airline Logo" class="airline-logo">
+            <div class="img-wrapper"><img src="${leg.operatingCarrier.logoUrl}" alt="Airline Logo" class="airline-logo"></div>
                 <p class="airline-name">${leg.operatingCarrier.displayName}</p>
             </div>
 
             <div class="flight-info">
             <!-- Display origin and destination station codes -->
-            <h3>${leg.originStationCode} → ${leg.destinationStationCode} Details:</h3>
+            <h3>${leg.originStationCode} <span class="planeSymbol">&#9992;</span> ${leg.destinationStationCode} Details:</h3>
             <!-- Display flight number -->
             <p class="flight-number">Flight #${leg.flightNumber}</p>
             <!-- Display departure and arrival times -->
@@ -132,4 +150,26 @@ export function formatDuration(minutes) {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
   return `${hours}hr & ${remainingMinutes}mins`;
+}
+
+// Function to add a flight to favorites
+export function addToFavorites(flightData) {
+  const currentFavorites = JSON.parse(localStorage.getItem('favoriteFlights')) || [];
+
+  // Check if the flight is not already in the favorites
+  if (!currentFavorites.some(favFlight => favFlight.uniqueID === flightData.uniqueID)) {
+    currentFavorites.push(flightData); // only the new flight in list
+    localStorage.setItem('favoriteFlights', JSON.stringify(currentFavorites)); // Store
+  }
+}
+
+// Function to remove a flight from favorites
+export function removeFromFavorites(uniqueID) {
+  let currentFavorites = JSON.parse(localStorage.getItem('favoriteFlights')) || [];
+
+  // Filter out the flight with the given unique ID
+  currentFavorites = currentFavorites.filter(favFlight => favFlight.uniqueID !== uniqueID);
+
+  // Store the updated list back in storage
+  localStorage.setItem('favoriteFlights', JSON.stringify(currentFavorites));
 }

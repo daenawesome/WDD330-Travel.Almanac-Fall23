@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+    <link rel="alternate icon" href="/images/logo.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <title>Travel Almanac | Favorites</title>
+  </head>
+  <body>
+    <div id="loadingSpinner" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+
+      <header id='dynamic-header'></header>
+
+      <main>
+          <section class="part-view">
+            <div class="flightsAvailable">
+              <h1 id="flightsCount">Your Favorite Flights: </h1>
+          </div>
+            </div>
+            <div id="flightsContainers" class="flightsContainers"></div>
+            <div id="noFlightsContainer" class="noFlightsContainer"></div>
+
+          </section>
+      </main>
+
+      <footer id='dynamic-footer'></footer>
+  </body>
+  <script defer type="module" src="../js/favorite-List.js"></script>
+</html>
+

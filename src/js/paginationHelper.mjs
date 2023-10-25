@@ -1,6 +1,6 @@
 
 export function renderPagination(page, totalPg, paginationContainer) {
-  console.log(paginationContainer);
+  // console.log(paginationContainer);
   paginationContainer.innerHTML = '';
 
   let pages = [1];

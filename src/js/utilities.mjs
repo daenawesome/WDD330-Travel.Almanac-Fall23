@@ -35,7 +35,7 @@ export function loadDynamicContent() {
 
 // Function to set a background image based on the current time
 export function setBackgroundImage(selector) {
-  // Array of background images you'd like to cycle through
+  // Array of background images
   const images = [
       '/images/backdrop1.jpg',
       '/images/backdrop2.jpg',
