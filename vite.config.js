@@ -11,6 +11,7 @@ export default defineConfig({
         main: resolve(__dirname, 'src/index.html'),
         aboutUs: resolve(__dirname, 'src/pages-others/about-us.html'),
         list: resolve(__dirname, 'src/pages-flight/flight-list.html'),
+        favorite: resolve(__dirname, 'src/pages-flight/flight-favorite.html'),
 
       },
     },

@@ -10,70 +10,32 @@
     <title>Travel Almanac | Home</title>
   </head>
   <body>
-      <header id='dynamic-header'></header>
-
-      <main>
-        <div class="homeWrapper">
+    <header id='dynamic-header'></header>
+    <div id="overlay" class="overlay"></div>
+    <div id="toast"></div>
+    <main>
+      <div class="homeWrapper">
         <div class="homeCard">
-          <div class="hero">
-            <img
-              src="/images/hero.png"
-              srcset="images/hero.png 500w, images/hero.png"
-              alt="Logo with Name"
-            />
-          </div>
-          <section id="booking" class="booking">
-              <div id="itenerary-type">
-                  <label>
-                      <input type="radio" name="trip-type" value="ONE_WAY" checked> One-Way
-                  </label>
-                  <label>
-                      <input type="radio" name="trip-type" value="ROUND_TRIP"> Roundtrip
-                  </label>
-              </div>
-
-              <div class="airportSearch">
-                <div>
-                  <input id="sourceAirport" placeholder="Country of Origin" required type="text">
-                  <button type="submit" id="searchSource">Airports</button>
-                  <div id="airportDropdownSource" class="airport-dropdown"></div>
-                </div>
-
-                <div>
-                  <input id="destinationAirport" placeholder="Country of Destination" required type="text">
-                  <button type="submit" id="searchDestination">Airports</button>
-                  <div id="airportDropdownDestination" class="airport-dropdown"></div>
-                </div>
-              </div>
-
-              <div class="flightDates">
-                <div>
-                  <label for="departure-date">Departure Date:</label>
-                    <input id="departure-date" placeholder="Departure Date" required type="date">
-                </div>
-                <div>
-                    <input class="return-date" hidden id="return-date" placeholder="Return Date" type="date">
-                    <label for="return-date">:Return Date</label>
-                  </div>
-              </div>
-
-              <div>
-                <label for="currency">Currency:</label>
-                <select id="currency" name="currency">
-                  <!-- Currency options will be dynamically populated -->
-                </select>
-              </div>
-
-              <div id="searchFlightsBtn">
-                <button type="submit" id="searchFlights">Search Flights</button>
-              </div>
-
+          <div class="hero"><img src="/images/hero.png" srcset="images/hero.png 500w, images/hero.png" alt="Logo with Name" /></div>
+          <section class="landingPage">
+            <div class="banner-content">
+              <h1>Your Next Adventure Starts with Travel Almanac</h1>
+              <p>Discover, Plan, and Embark on Your Dream Journey with Ease</p>
+            </div>
+            <section class="searchBtns">
+              <div id="searchFlights"><a href="./pages-flight/flight-list.html" id="searchFlightsBtn" class="button">Search Flights</a></div>
+              <div id="searchCruises"><a href="#" id="searchCruisesBtn" class="button">Search Cruises</a></div>
+              <div id="searchRestaurants"><a href="#" id="searchRestaurantsBtn" class="button">Search Restaurants</a></div>
+              <div id="searchRentalCars"><a href="#" id="searchRentalCarsBtn" class="button">Search Rental Cars</a></div>
+            </section>
+            <section class="about-intro">
+              <h2>Seamless Planning for Unforgettable Journeys</h2>
+              <p>At Travel Almanac, we bring the world to your fingertips. Our comprehensive platform removes the hassle from travel planning. Book your flights, cruises, rental cars, and hotels all in one place. Focus on the adventure, not the planning.</p>
+            </section>
           </section>
         </div>
       </div>
-      </main>
-
-      <footer id='dynamic-footer'></footer>
+    </main>
+    <footer id='dynamic-footer'></footer>
   </body>
 </html>
-

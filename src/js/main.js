@@ -1,156 +1,66 @@
 import {
   loadDynamicContent,
+  setBackgroundImage,
 } from './utilities.mjs'
 
-import {
-  fetchAndDisplayAirports,
-  toggleReturnDate,
-  loadCurrencyData,
-  fetchFlights,
-  structureFlightData,
-} from './flightServices.mjs'
-
 loadDynamicContent ();
-toggleReturnDate();
-let currencyData = [];
 
-// Constants for DOM elements
-const elements = {
-  sourceInput: document.getElementById('sourceAirport'),
-  destinationInput: document.getElementById('destinationAirport'),
-  departureDateInput: document.getElementById('departure-date'),
-  returnDateInput: document.getElementById('return-date'),
-  searchButton: document.getElementById('searchFlights'),
-  // Using arrow functions to ensure these values are fetched only when called
-  itineraryType: () => document.querySelector('input[name="trip-type"]:checked').value,
-  currencyCode: () => document.getElementById('currency').value
-};
-
-// Add event listener to the search button
-elements.searchButton.addEventListener('click', async function() {
-
-  // Destructuring elements for easier access
-  const {
-      sourceInput,
-      destinationInput,
-      departureDateInput,
-      returnDateInput,
-      itineraryType,
-      currencyCode
-  } = elements;
-
-  // Construct search parameters
-  const searchParameters = {
-      sourceCode: sourceInput.value,
-      destinationCode: destinationInput.value,
-      departureDate: departureDateInput.value,
-      returnDate: (itineraryType() === 'ROUND_TRIP') ? returnDateInput.value : '',
-      itineraryType: itineraryType(),
-      sortOrder: 'ML_BEST_VALUE',
-      classOfService: 'ECONOMY',
-      currencyCode: currencyCode()
-  };
-
-  // Construct the URL for API request
-  const baseURL = `https://tripadvisor16.p.rapidapi.com/api/v1/flights/searchFlights`;
-  const queryParams = new URLSearchParams({
-      sourceAirportCode: searchParameters.sourceCode,
-      destinationAirportCode: searchParameters.destinationCode,
-      date: searchParameters.departureDate,
-      itineraryType: searchParameters.itineraryType,
-      sortOrder: searchParameters.sortOrder,
-      numAdults: '1',
-      numSeniors: '0',
-      classOfService: searchParameters.classOfService,
-      pageNumber: '1',
-      currencyCode: searchParameters.currencyCode
-  });
-  if (searchParameters.itineraryType === 'ROUND_TRIP') {
-      queryParams.append('returnDate', searchParameters.returnDate);
-  }
-  const url = `${baseURL}?${queryParams.toString()}`;
-  sessionStorage.setItem('searchParameters', JSON.stringify(searchParameters));
-
-  // Fetch flight data using the constructed URL
-  const result = await fetchFlights(url);
-  if (result && result.data && result.data.flights) {
-
-      // Extract and structure the flight data
-      const structuredFlights = structureFlightData(result.data.flights);
-      sessionStorage.setItem('fetchedFlights', JSON.stringify(structuredFlights));
-
-      window.location.href = './pages-flight/flight-list.html';
-  } else {
-      console.error('No flights found or unexpected data structure:', result);
-  }
-});
-
-// Add event listener for trip type radio buttons
-document.querySelectorAll('input[name="trip-type"]').forEach(radio => {
-  radio.addEventListener('change', toggleReturnDate);
-});
-
-// Add event listener for source dropdown Airport search
-document.getElementById('searchSource').addEventListener('click', function() {
-  fetchAndDisplayAirports('sourceAirport', 'airportDropdownSource');
-});
-
-// Add event listener for destination dropdown Airport search
-document.getElementById('searchDestination').addEventListener('click', function() {
-  fetchAndDisplayAirports('destinationAirport', 'airportDropdownDestination');
-});
-
-// Load currency data and set up the event listener
-loadCurrencyData().then(data => {
-    currencyData = data;
-
-    // Event listener for the Airports button
-    document.getElementById('searchSource').addEventListener('click', function() {
-        const locationInput = document.getElementById('sourceAirport').value.toLowerCase();
-
-        // Search for a matching location in the JSON data
-        const matchingCountry = currencyData.find(item =>
-            item.countryName.toLowerCase() === locationInput ||
-            item.capital.toLowerCase() === locationInput
-        );
-
-        // Update the currency dropdown if a match is found
-        if (matchingCountry) {
-            document.getElementById('currency').value = matchingCountry.currencyCode;
-        } else {
-            document.getElementById('currency').value = 'USD';  // Default to USD if no match is found
-        }
-    });
-});
-
-// Background
+// Background Image
 document.addEventListener('DOMContentLoaded', function() {
-  const images = [
-      '/images/backdrop1.jpg',
-      '/images/backdrop2.jpg',
-      '/images/backdrop3.jpg',
-      '/images/backdrop4.jpg',
-  ];
-
-  function setBackgroundImageBasedOnTime() {
-      const hour = new Date().getHours();
-      const mainElement = document.querySelector('main');
-
-      let imageUrl;
-
-      if (hour >= 0 && hour < 6) {
-          imageUrl = images[0];
-      } else if (hour >= 6 && hour < 12) {
-          imageUrl = images[1];
-      } else if (hour >= 12 && hour < 18) {
-          imageUrl = images[2];
-      } else {
-          imageUrl = images[3];
-      }
-
-      mainElement.style.backgroundImage = `url('${imageUrl}')`;
-  }
-
-  // Set the background image when the page loads
-  setBackgroundImageBasedOnTime();
+  setBackgroundImage('main');
 });
+
+// Function to close toast and hide overlay
+function closeToast() {
+  var toast = document.getElementById('toast');
+  var overlay = document.getElementById('overlay');
+  toast.style.visibility = 'hidden';
+  overlay.style.display = 'none';
+}
+
+function showToast(serviceName) {
+  var toast = document.getElementById('toast');
+  var overlay = document.getElementById('overlay');
+
+  toast.innerHTML = '';
+
+  var message = document.createElement('div');
+
+  message.innerHTML = '<span class="notice">🚧 Service Under Construction 🚧</span>' +
+                      '<br>' +
+                      '<h3>Dear valued user,</h3>' +
+                      '<br>' +
+                      '<p>We\'re currently in the midst of refining and enhancing the ' + serviceName + ' service to ensure it meets the high standards of convenience and satisfaction that you expect and deserve.</p>' +
+                      '<p>In the meantime, we invite you to explore and utilize our "Search Flights" feature, designed to offer you seamless travel planning experiences.</p>' +
+                      '<p>Thank you for your understanding and patience. Your satisfaction is our priority, and we\'re excited to share the improvements with you soon!</p>' +
+                      '<br>' +
+                      '<h3>From Team Travel Almanac</h3>' +
+                      '<p>(fake company & imaginary team)</p>' +
+                      '<br>' +
+                      '<span class="notice">🚧 Service Under Construction 🚧</span>';
+
+  // close button
+  var closeButton = document.createElement('span');
+  closeButton.textContent = '×';
+  closeButton.classList.add('close-toast');
+  closeButton.addEventListener('click', closeToast);
+
+  // Append message and close button to the toast div
+  toast.appendChild(message);
+  toast.appendChild(closeButton);
+
+  // Show toast and overlay
+  overlay.style.display = 'block';
+  toast.style.visibility = 'visible';
+
+  // After 3 mins, close toast
+  setTimeout(function() {
+      closeToast();
+  }, 180000);
+}
+
+// Event listeners for buttons
+document.getElementById('searchCruisesBtn').onclick = function(){ showToast('Cruises'); }
+document.getElementById('searchRestaurantsBtn').onclick = function(){ showToast('Restaurants'); }
+document.getElementById('searchRentalCarsBtn').onclick = function(){ showToast('Rental Cars'); }
+document.getElementById('overlay').addEventListener('click', closeToast);
